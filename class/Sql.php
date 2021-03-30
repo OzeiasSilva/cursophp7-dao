@@ -13,20 +13,20 @@ class Sql extends PDO{
     }
 
     // Método onde recebe todos os paramentos passado pelo o usuario
-    private function setParams($statment, $parameters = array()){
+    private function setParams($statement, $parameters = array()){
 
         foreach ($parameters as $key => $value) {
             
-            $this->setParam($statment, $key, $value); // chama a função 'setParam que executa só uma linha'
+            $this->setParam($statement, $key, $value); // chama a função 'setParam que executa só uma linha'
 
         }
 
     }
 
     // Método para tratar só um dado
-    private function setParam($statment, $key, $value){
+    private function setParam($statement, $key, $value){
 
-        $statment->bindParam($key, $value);
+        $statement->bindParam($key, $value);
 
     }
 

@@ -27,7 +27,7 @@
 			return $this->dessenha;
 		}
 
-		public function setuDessenha($value){
+		public function setDessenha($value){
 			$this->dessenha = $value;
 		}
 
@@ -51,12 +51,7 @@
 			// Valida se o array tem mais de 0 registros
 			if (count($results) > 0){
 
-				$row = $results[0];
-
-				$this->setIdusuario($row['idusuario']);
-				$this->setDeslogin($row['deslogin']);
-				$this->setuDessenha($row['dessenha']);
-				$this->setDtcadastro(new DateTime ($row['dtcadastro'])); //new DateTime = instância uma classe datetime e trata os dados dentro dessa classe
+				$this->setData($results[0]);
 				
 			}
 
@@ -94,18 +89,68 @@
 			// Valida se o array tem mais de 0 registros
 			if (count($results) > 0){
 
-				$row = $results[0];
-
-				$this->setIdusuario($row['idusuario']);
-				$this->setDeslogin($row['deslogin']);
-				$this->setuDessenha($row['dessenha']);
-				$this->setDtcadastro(new DateTime ($row['dtcadastro'])); //new DateTime = instância uma classe datetime e trata os dados dentro dessa classe
+				$this->setData($results[0]);
 				
 			}else{
 
 				throw new Exception("Login e/ou senha iválidos");
 				
 			}
+		}
+
+
+		//função para manipular dados
+		public function setData($data){
+
+			$this->setIdusuario($data['idusuario']);
+			$this->setDeslogin($data['deslogin']);
+			$this->setDessenha($data['dessenha']);
+			$this->setDtcadastro(new DateTime ($data['dtcadastro'])); //new DateTime = instância uma classe datetime e trata os dados dentro dessa classe
+
+		}
+
+		// função para inserir dados no banco
+		public function insert(){
+
+			$sql = new Sql();
+
+			$results = $sql->select("CALL  sp_usuarios_insert(:LOGIN, :PASSWORD)", array(
+				':LOGIN'=>$this->getDeslogin(),
+				':PASSWORD'=>$this->getDessenha()
+			));
+
+			if(count($results) > 0){
+				$this->setData($results[0]);
+			}
+		}
+
+		//função para atualizar dados no banco
+		public function update($login, $password){
+
+			$this->setDeslogin($login);
+			$this->setDessenha($password);
+
+			// Comandos para verificar se os dados estão vindo do index.php
+			//echo $this->getIdusuario();
+			//echo $this->getDeslogin();
+			//echo $this->getDessenha();
+
+			$sql = new Sql();
+
+			$sql->query("UPDATE tb_usuarios SET deslogin = :LOGIN, dessenha = :PASSWORD WHERE idusuario = :ID", array(
+				':LOGIN'=>$this->getDeslogin(),
+				':PASSWORD'=>$this->getDessenha(),
+				':ID'=>$this->getIdusuario()
+		));
+
+		}
+
+		//métedo construtor para criar usuários no banco
+		public function __construct($login = "", $password = ""){
+
+			$this->setDeslogin($login);
+			$this->setDessenha($password);
+
 		}
 
 		// função para mostrar os dados 

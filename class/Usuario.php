@@ -125,7 +125,7 @@
 		}
 
 		//função para atualizar dados no banco
-		public function update($login, $password){
+		public function apdate($login, $password){
 
 			$this->setDeslogin($login);
 			$this->setDessenha($password);
@@ -137,7 +137,7 @@
 
 			$sql = new Sql();
 
-			$sql->query("UPDATE tb_usuarios SET deslogin = :LOGIN, dessenha = :PASSWORD WHERE idusuario = :ID", array(
+			$sql->executeQuery("UPDATE tb_usuarios SET deslogin = :LOGIN, dessenha = :PASSWORD WHERE idusuario = :ID", array(
 				':LOGIN'=>$this->getDeslogin(),
 				':PASSWORD'=>$this->getDessenha(),
 				':ID'=>$this->getIdusuario()

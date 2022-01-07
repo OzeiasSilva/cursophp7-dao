@@ -45,7 +45,7 @@
 
 	$usuario->loadById(7);
 
-	$usuario->update('professor','senha123');
+	$usuario->apdate('professor','senha123');
 
 	echo $usuario;
 

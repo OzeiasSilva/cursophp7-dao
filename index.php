@@ -41,15 +41,22 @@
 	//echo $aluno;
 
 	//Atualizando usuário
-	$usuario = new Usuario();
+	/*$usuario = new Usuario();
 
 	$usuario->loadById(7);
 
 	$usuario->apdate('professor','senha123');
 
 	echo $usuario;
+*/
 
+	$usuario = new Usuario();
 
+	$usuario->loadById(7);
+
+	$usuario->delete();
+
+	echo $usuario;
 
 
 ?>
